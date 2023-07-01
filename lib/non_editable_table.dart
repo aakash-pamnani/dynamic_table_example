@@ -76,7 +76,8 @@ class _NonEditableTableState extends State<NonEditableTable> {
               15,
               20,
             ],
-            dataRowHeight: 60,
+            dataRowMinHeight: 60,
+            dataRowMaxHeight: 60,
             columnSpacing: 60,
             showCheckboxColumn: _showCheckboxColumn,
             onRowsPerPageChanged: _showRowsPerPage

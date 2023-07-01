@@ -1,5 +1,6 @@
 import 'package:dynamic_table_example/editable_table.dart';
 import 'package:dynamic_table_example/sortable_table_custom_actions.dart';
+import 'package:dynamic_table_example/styling.dart';
 import 'package:dynamic_table_example/using_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,19 +26,22 @@ class _MyAppState extends State<MyApp> {
     const NonEditableTable(),
     const EditableTable(),
     const UsingMethods(),
-    const SortableTable()
+    const SortableTable(),
+    const StylingTable(),
   ];
   final List<String> titles = [
     "Non Editable Table",
     "Editable Table",
     "Using Methods",
-    "Sortable Table"
+    "Sortable Table",
+    "Styling Table",
   ];
   final List<String> urls = [
-    "https://github.com/aakash-pamnani/dynamic_table/blob/master/example/lib/non_editable_table.dart",
-    "https://github.com/aakash-pamnani/dynamic_table/blob/master/example/lib/editable_table.dart",
-    "https://github.com/aakash-pamnani/dynamic_table/blob/master/example/lib/using_methods.dart",
-    "https://github.com/aakash-pamnani/dynamic_table/blob/master/example/lib/sortable_table_custom_actions.dart",
+    "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/non_editable_table.dart",
+    "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/editable_table.dart",
+    "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/using_methods.dart",
+    "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/sortable_table_custom_actions.dart",
+    "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/styling.dart",
   ];
   @override
   Widget build(BuildContext context) {
@@ -46,8 +50,27 @@ class _MyAppState extends State<MyApp> {
         bool isDesktop = MediaQuery.of(context).size.width > 800;
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Dynamic Table Example (Soon on pub.dev)"),
+            title: const Text("Dynamic Table Example (0.0.1-beta.1)"),
             actions: [
+              ElevatedButton(
+                onPressed: () {
+                  canLaunchUrl(
+                          Uri.parse("https://pub.dev/packages/dynamic_table"))
+                      .then(
+                    (value) => launchUrl(
+                      Uri.parse("https://pub.dev/packages/dynamic_table"),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                ),
+                child: Image.asset(
+                  "assets/pub-dev-logo.png",
+                  width: 100,
+                ),
+              ),
               ElevatedButton.icon(
                 onPressed: () {
                   canLaunchUrl(Uri.parse(
@@ -65,7 +88,7 @@ class _MyAppState extends State<MyApp> {
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                 ),
-              )
+              ),
             ],
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
@@ -98,6 +121,8 @@ class _MyAppState extends State<MyApp> {
                         icon: Icon(Icons.code), label: "Using Methods"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.sort), label: "Sortable Table"),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.color_lens), label: "Styling Table"),
                   ],
                 ),
           body: Row(
@@ -121,6 +146,10 @@ class _MyAppState extends State<MyApp> {
                     NavigationRailDestination(
                       icon: Icon(Icons.sort),
                       label: Text("Sortable Table"),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.color_lens),
+                      label: Text("Styling Table"),
                     ),
                   ],
                   selectedIndex: _currentTable,

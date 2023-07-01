@@ -9,9 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dynamic_table:
-    path: ../
+  dynamic_table: ^0.0.1-beta.1
   url_launcher: ^6.1.11
+  flutter_colorpicker: ^1.0.3
 
 dev_dependencies:
   flutter_test:

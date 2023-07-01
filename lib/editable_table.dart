@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dynamic_table/dynamic_table.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,7 @@ class _EditableTableState extends State<EditableTable> {
   bool _showActions = true;
   bool _showAddRowButton = true;
   bool _showDeleteAction = true;
+  var myData = dummyData.toList();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -124,6 +127,8 @@ class _EditableTableState extends State<EditableTable> {
                   content: Text("Row Edited index:$index row:$row"),
                 ),
               );
+              myData[index] = row;
+              return true;
             },
             onRowDelete: (index, row) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -131,14 +136,53 @@ class _EditableTableState extends State<EditableTable> {
                   content: Text("Row Deleted index:$index row:$row"),
                 ),
               );
+              myData.removeAt(index);
+              return true;
             },
             onRowSave: (index, old, newValue) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content:
-                      Text("Row Saved index:$index old:$old new:$newValue"),
-                ),
-              );
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content:
+              //         Text("Row Saved index:$index old:$old new:$newValue"),
+              //   ),
+              // );
+              if (newValue[0] == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Name cannot be null"),
+                  ),
+                );
+                return null;
+              }
+
+              if (newValue[0].toString().length < 3) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Name must be atleast 3 characters long"),
+                  ),
+                );
+                return null;
+              }
+              if (newValue[0].toString().length > 20) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Name must be less than 20 characters long"),
+                  ),
+                );
+                return null;
+              }
+              if (newValue[1] == null) {
+                //If newly added row then add unique ID
+                newValue[1] = Random()
+                    .nextInt(500)
+                    .toString(); // to add Unique ID because it is not editable
+              }
+              // Do some modification to `newValue` and return `newValue`
+              newValue[0] = newValue[0]
+                  .toString()
+                  .toUpperCase(); // Convert name to uppercase
+              myData[index] = newValue; // Update data
+              return newValue;
             },
             showActions: _showActions,
             showAddRowButton: _showAddRowButton,
@@ -151,7 +195,8 @@ class _EditableTableState extends State<EditableTable> {
               15,
               20,
             ],
-            dataRowHeight: 60,
+            dataRowMinHeight: 60,
+            dataRowMaxHeight: 60,
             columnSpacing: 60,
             actionColumnTitle: "My Action Title",
             showCheckboxColumn: _showCheckboxColumn,
@@ -165,7 +210,7 @@ class _EditableTableState extends State<EditableTable> {
                   }
                 : null,
             rows: List.generate(
-              dummyData.length,
+              myData.length,
               (index) => DynamicTableDataRow(
                 onSelectChanged: (value) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -178,9 +223,9 @@ class _EditableTableState extends State<EditableTable> {
                 },
                 index: index,
                 cells: List.generate(
-                  dummyData[index].length,
+                  myData[index].length,
                   (cellIndex) => DynamicTableDataCell(
-                    value: dummyData[index][cellIndex],
+                    value: myData[index][cellIndex],
                   ),
                 ),
               ),

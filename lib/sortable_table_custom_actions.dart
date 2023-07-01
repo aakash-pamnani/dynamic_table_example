@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dynamic_table/dynamic_table.dart';
 import 'package:flutter/material.dart';
 
@@ -38,28 +40,74 @@ class _SortableTableState extends State<SortableTable> {
                 icon: const Icon(Icons.delete),
               ),
             ],
-            onRowEdit: (index, row) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Row Edited index:$index row:$row"),
-                ),
-              );
-            },
-            onRowDelete: (index, row) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Row Deleted index:$index row:$row"),
-                ),
-              );
-            },
-            onRowSave: (index, old, newValue) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content:
-                      Text("Row Saved index:$index old:$old new:$newValue"),
-                ),
-              );
-            },
+             onRowEdit: (index, row) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Row Edited index:$index row:$row"),
+                  ),
+                );
+                data[index] = row;
+                return true;
+              },
+              onRowDelete: (index, row) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Row Deleted index:$index row:$row"),
+                  ),
+                );
+                data.removeAt(index);
+                return true;
+              },
+              onRowSave: (index, old, newValue) {
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     content:
+                //         Text("Row Saved index:$index old:$old new:$newValue"),
+                //   ),
+                // );
+                if (newValue[0] == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Name cannot be null"),
+                    ),
+                  );
+                  return null;
+                }
+
+                if (newValue[0].toString().length < 3) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Name must be atleast 3 characters long"),
+                    ),
+                  );
+                  return null;
+                }
+                if (newValue[0].toString().length > 20) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text("Name must be less than 20 characters long"),
+                    ),
+                  );
+                  return null;
+                }
+                if (newValue[1] == null) {
+                  //If newly added row then add unique ID
+                  newValue[1] = Random()
+                      .nextInt(500)
+                      .toString(); // to add Unique ID because it is not editable
+                }
+                data[index] = newValue; // Update data
+                if (newValue[0] == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Name cannot be null"),
+                    ),
+                  );
+                  return null;
+                }
+                return newValue;
+              },
             rowsPerPage: 5,
             availableRowsPerPage: const [
               5,
@@ -67,7 +115,8 @@ class _SortableTableState extends State<SortableTable> {
               15,
               20,
             ],
-            dataRowHeight: 60,
+            dataRowMinHeight: 60,
+            dataRowMaxHeight: 60,
             columnSpacing: 60,
             actionColumnTitle: "My Action Title",
             showCheckboxColumn: true,

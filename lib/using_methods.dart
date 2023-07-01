@@ -179,7 +179,8 @@ class UsingMethods extends StatelessWidget {
               20,
             ],
             showActions: true,
-            dataRowHeight: 60,
+            dataRowMinHeight: 60,
+            dataRowMaxHeight: 60,
             columnSpacing: 60,
             showCheckboxColumn: true,
             onRowsPerPageChanged: (value) {
