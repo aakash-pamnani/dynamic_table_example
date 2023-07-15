@@ -45,10 +45,10 @@ packages:
     dependency: "direct main"
     description:
       name: dynamic_table
-      sha256: b26e158c95f2a13e8c5f5c39c82a9108e83c0546608ed6342a7ae2b955ffc9cd
+      sha256: a41f9137053b6d0a96bf3fd1fe62b5c647fadb81f7a652e29fa8c62b2d411bf0
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1-beta.1"
+    version: "0.0.1-beta.2"
   fake_async:
     dependency: transitive
     description:

@@ -245,7 +245,12 @@ class _StylingTableState extends State<StylingTable> {
                     // dynamicTableInputType: DynamicTableDropDownInput<String>()
                     dynamicTableInputType:
                         DynamicTableInputType.dropDown<String>(
-                      items: genderDropdown,
+                      items: genderDropdown
+                          .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e),
+                              ))
+                          .toList(),
                       selectedItemBuilder: (context) {
                         return genderDropdown
                             .map((e) => Text(e))
@@ -257,12 +262,6 @@ class _StylingTableState extends State<StylingTable> {
                       displayBuilder: (value) =>
                           value ??
                           "", // How the string will be displayed in non editing mode
-                      itemBuilder: (value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-                        );
-                      },
                     ),
                   ),
                   DynamicTableDataColumn(

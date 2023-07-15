@@ -40,74 +40,73 @@ class _SortableTableState extends State<SortableTable> {
                 icon: const Icon(Icons.delete),
               ),
             ],
-             onRowEdit: (index, row) {
+            onRowEdit: (index, row) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Row Edited index:$index row:$row"),
+                ),
+              );
+              data[index] = row;
+              return true;
+            },
+            onRowDelete: (index, row) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Row Deleted index:$index row:$row"),
+                ),
+              );
+              data.removeAt(index);
+              return true;
+            },
+            onRowSave: (index, old, newValue) {
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content:
+              //         Text("Row Saved index:$index old:$old new:$newValue"),
+              //   ),
+              // );
+              if (newValue[0] == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Row Edited index:$index row:$row"),
+                  const SnackBar(
+                    content: Text("Name cannot be null"),
                   ),
                 );
-                data[index] = row;
-                return true;
-              },
-              onRowDelete: (index, row) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Row Deleted index:$index row:$row"),
-                  ),
-                );
-                data.removeAt(index);
-                return true;
-              },
-              onRowSave: (index, old, newValue) {
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(
-                //     content:
-                //         Text("Row Saved index:$index old:$old new:$newValue"),
-                //   ),
-                // );
-                if (newValue[0] == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Name cannot be null"),
-                    ),
-                  );
-                  return null;
-                }
+                return null;
+              }
 
-                if (newValue[0].toString().length < 3) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Name must be atleast 3 characters long"),
-                    ),
-                  );
-                  return null;
-                }
-                if (newValue[0].toString().length > 20) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content:
-                          Text("Name must be less than 20 characters long"),
-                    ),
-                  );
-                  return null;
-                }
-                if (newValue[1] == null) {
-                  //If newly added row then add unique ID
-                  newValue[1] = Random()
-                      .nextInt(500)
-                      .toString(); // to add Unique ID because it is not editable
-                }
-                data[index] = newValue; // Update data
-                if (newValue[0] == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Name cannot be null"),
-                    ),
-                  );
-                  return null;
-                }
-                return newValue;
-              },
+              if (newValue[0].toString().length < 3) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Name must be atleast 3 characters long"),
+                  ),
+                );
+                return null;
+              }
+              if (newValue[0].toString().length > 20) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Name must be less than 20 characters long"),
+                  ),
+                );
+                return null;
+              }
+              if (newValue[1] == null) {
+                //If newly added row then add unique ID
+                newValue[1] = Random()
+                    .nextInt(500)
+                    .toString(); // to add Unique ID because it is not editable
+              }
+              data[index] = newValue; // Update data
+              if (newValue[0] == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Name cannot be null"),
+                  ),
+                );
+                return null;
+              }
+              return newValue;
+            },
             rowsPerPage: 5,
             availableRowsPerPage: const [
               5,
@@ -193,7 +192,12 @@ class _SortableTableState extends State<SortableTable> {
               DynamicTableDataColumn(
                 label: const Text("Gender"),
                 dynamicTableInputType: DynamicTableInputType.dropDown<String>(
-                  items: genderDropdown,
+                  items: genderDropdown
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          ))
+                      .toList(),
                   selectedItemBuilder: (context) {
                     return genderDropdown
                         .map((e) => Text(e))
@@ -204,12 +208,6 @@ class _SortableTableState extends State<SortableTable> {
                   displayBuilder: (value) =>
                       value ??
                       "", // How the string will be displayed in non editing mode
-                  itemBuilder: (value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
-                  },
                 ),
               ),
               DynamicTableDataColumn(

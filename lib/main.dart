@@ -1,3 +1,4 @@
+import 'package:dynamic_table_example/autocomplete_input_example.dart';
 import 'package:dynamic_table_example/editable_table.dart';
 import 'package:dynamic_table_example/sortable_table_custom_actions.dart';
 import 'package:dynamic_table_example/styling.dart';
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     const UsingMethods(),
     const SortableTable(),
     const StylingTable(),
+    const AutocompleteEample(),
   ];
   final List<String> titles = [
     "Non Editable Table",
@@ -35,6 +37,7 @@ class _MyAppState extends State<MyApp> {
     "Using Methods",
     "Sortable Table",
     "Styling Table",
+    "Auto Complete Input"
   ];
   final List<String> urls = [
     "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/non_editable_table.dart",
@@ -42,6 +45,7 @@ class _MyAppState extends State<MyApp> {
     "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/using_methods.dart",
     "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/sortable_table_custom_actions.dart",
     "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/styling.dart",
+    "https://github.com/aakash-pamnani/dynamic_table_example/tree/master/lib/autocomplete_input_example.dart",
   ];
   @override
   Widget build(BuildContext context) {
@@ -123,6 +127,9 @@ class _MyAppState extends State<MyApp> {
                         icon: Icon(Icons.sort), label: "Sortable Table"),
                     BottomNavigationBarItem(
                         icon: Icon(Icons.color_lens), label: "Styling Table"),
+                    BottomNavigationBarItem(
+                        icon: Icon(Icons.auto_mode),
+                        label: "Auto Complete Input"),
                   ],
                 ),
           body: Row(
@@ -150,6 +157,10 @@ class _MyAppState extends State<MyApp> {
                     NavigationRailDestination(
                       icon: Icon(Icons.color_lens),
                       label: Text("Styling Table"),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.auto_mode),
+                      label: Text("Auto Complete Input"),
                     ),
                   ],
                   selectedIndex: _currentTable,

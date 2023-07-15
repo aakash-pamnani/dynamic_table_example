@@ -240,7 +240,12 @@ class UsingMethods extends StatelessWidget {
                 label: const Text("Gender"),
                 // dynamicTableInputType: DynamicTableDropDownInput<String>()
                 dynamicTableInputType: DynamicTableInputType.dropDown<String>(
-                  items: genderDropdown,
+                  items: genderDropdown
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e),
+                          ))
+                      .toList(),
                   selectedItemBuilder: (context) {
                     return genderDropdown
                         .map((e) => Text(e))
@@ -251,12 +256,6 @@ class UsingMethods extends StatelessWidget {
                   displayBuilder: (value) =>
                       value ??
                       "", // How the string will be displayed in non editing mode
-                  itemBuilder: (value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
-                  },
                 ),
               ),
               DynamicTableDataColumn(
